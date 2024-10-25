@@ -8,6 +8,7 @@ import java.io.InputStream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LookForFiveGenresTest {
+    // Test to verify if the five genres exist in the API
     @Test
     public void testFiveGenre() throws IOException {
         SpotifyAPIParser parser = new SpotifyAPIParser();
