@@ -3,8 +3,14 @@ package edu.bsu.cs222;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        ArtistByGenre artistByGenre = new ArtistByGenre();
+    public static void main(String[] args) throws Exception {
+        Menu menu = new Menu();
+        menu.getMenu();
+
+
+
+
+        /*ArtistByGenre artistByGenre = new ArtistByGenre();
         Scanner scanner = new Scanner(System.in);
         boolean validGenre = false;
         while (!validGenre) {
@@ -56,10 +62,21 @@ public class Main {
                 System.out.print("\nEnter a genre from listed: ");
                 String genre = scanner.nextLine();
                 artistByGenre.getArtistByGenre(genre.toLowerCase());
+                if (!genre.isEmpty() && genre != null){
+                    System.out.print("\nPlease pick an option to see results: ");
+                    System.out.println("1: Artists");
+                    System.out.println("2. Tracks");
+                    System.out.println("3. Both");
+                    System.out.println("4. Exit");
+                    System.out.print(">> ");
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+
+         */
     }
 }
