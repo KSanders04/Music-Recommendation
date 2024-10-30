@@ -9,17 +9,14 @@ public class TrackParser {
         JSONArray tracks = jsonObject.getJSONArray("tracks");
 
         if (!tracks.isEmpty()) {
-            int numberOfArtists = 0;
-            System.out.println("Tracks:");
-            for (int i = 0; i < tracks.length() && numberOfArtists < 5; i++) {
-                JSONArray artists = tracks.getJSONObject(i).getJSONArray("name");
-                for (int j = 0; j < artists.length() && numberOfArtists < 5; j++) {
-                    String artistName = artists.getJSONObject(j).getString("name");
-                    System.out.println(artistName);
-                    numberOfArtists += 1;
-                }
+            int numberOfTracks = 0;
+            System.out.println("\nTracks:");
+            for (int i = 0; i < tracks.length() && numberOfTracks < 5; i++) {
+                String songName = tracks.getJSONObject(i).getString("name");
+                System.out.println(songName);
+                numberOfTracks += 1;
             }
-        } else {
+        }else {
             System.out.println("No tracks found for this genre.");
         }
     }

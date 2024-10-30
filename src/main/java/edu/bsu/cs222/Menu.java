@@ -53,7 +53,7 @@ public class Menu {
                     tango | techno | trance | trip-hop | turkish | work-out | world-music""");
 
         System.out.print("\nEnter a genre from list: ");
-        String genre = scanner.nextLine();
+        String genre = scanner.nextLine().toLowerCase();
         boolean validGenre = false;
         while (!validGenre) {
             if (!genre.isEmpty() && genre != null) {
@@ -61,7 +61,8 @@ public class Menu {
                 System.out.println("\n1: Artists");
                 System.out.println("2. Tracks");
                 System.out.println("3. Both");
-                System.out.println("4. Exit");
+                System.out.println("4. Change Genre");
+                System.out.println("5. Exit");
                 System.out.print(">> ");
                 int num = scanner.nextInt();
 
@@ -75,9 +76,12 @@ public class Menu {
                     artistByGenre.getArtistByGenre(genre);
                     trackByGenre.getTrackByGenre(genre);
                 }
-                else if (num == 4) {
-                    validGenre = false;
-                    break;
+                else if (num == 4){
+                    System.out.print("\nEnter a genre from list: ");
+                    genre = scanner.next().toLowerCase();
+                }
+                else if (num == 5) {
+                    validGenre = true;
                 }
                 else{
                     System.out.println("Not valid input");
