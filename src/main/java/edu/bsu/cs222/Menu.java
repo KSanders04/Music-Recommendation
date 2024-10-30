@@ -60,7 +60,7 @@ public class Menu {
 
             if (!genre.isEmpty()) {
                 System.out.println("\nPlease pick an option to see results: ");
-                System.out.println("1: Artists");
+                System.out.println("1. Artists");
                 System.out.println("2. Songs");
                 System.out.println("3. Both");
                 System.out.println("4. Change Genre");

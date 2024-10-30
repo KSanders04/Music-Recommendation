@@ -23,13 +23,13 @@ public class RequestToken {
         return accessToken;
     }
     private void fetchAccessToken() throws IOException {
-        String auth = clientID + ":" + clientSecret;
-        String encodedAuth = Base64.getEncoder().encodeToString(auth.getBytes());
+        String authorization = clientID + ":" + clientSecret;
+        String encodedAuthorization = Base64.getEncoder().encodeToString(authorization.getBytes());
 
         URL url = new URL(tokenURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
-        connection.setRequestProperty("Authorization", "Basic " + encodedAuth);
+        connection.setRequestProperty("Authorization", "Basic " + encodedAuthorization);
         connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         connection.setDoOutput(true);
 

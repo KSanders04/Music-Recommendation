@@ -12,7 +12,7 @@ public class SongByGenre {
 
     public void getSongByGenre(String genre) throws Exception {
         String accessToken = requestToken.getAccessToken();
-        String url = "https://api.spotify.com/v1/recommendations?limit=5&seed_genres=" + genre + "&min_popularity=50";
+        String url = "https://api.spotify.com/v1/recommendations?limit=5&seed_genres=" + genre + "&min_popularity=45";
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Authorization", "Bearer " + accessToken);
