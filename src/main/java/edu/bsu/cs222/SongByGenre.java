@@ -5,12 +5,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class TrackByGenre {
+public class SongByGenre {
 
     RequestToken requestToken = new RequestToken();
-    TrackParser trackParser = new TrackParser();
+    SongParser songParser = new SongParser();
 
-    public void getTrackByGenre(String genre) throws Exception {
+    public void getSongByGenre(String genre) throws Exception {
         String accessToken = requestToken.getAccessToken();
         String url = "https://api.spotify.com/v1/recommendations?limit=5&seed_genres=" + genre + "&min_popularity=50";
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -25,10 +25,10 @@ public class TrackByGenre {
                 while ((line = bufferedReader.readLine()) != null) {
                     response.append(line);
                 }
-                trackParser.printTrack(response.toString());
+                songParser.printSong(response.toString());
             }
         } else {
-            System.out.println("GET request failed: " + connection.getResponseMessage());
+            System.out.println("Song request failed");
         }
     }
 }

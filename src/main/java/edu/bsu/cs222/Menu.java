@@ -6,7 +6,7 @@ public class Menu {
     public void getMenu() throws Exception {
 
         ArtistByGenre artistByGenre = new ArtistByGenre();
-        TrackByGenre trackByGenre = new TrackByGenre();
+        SongByGenre songByGenre = new SongByGenre();
         Scanner scanner = new Scanner(System.in);
         System.out.println("""
                     
@@ -72,11 +72,11 @@ public class Menu {
                     artistByGenre.getArtistByGenre(genre);
                 }
                 else if (num == 2) {
-                    trackByGenre.getTrackByGenre(genre);
+                    songByGenre.getSongByGenre(genre);
                 }
                 else if (num == 3) {
                     artistByGenre.getArtistByGenre(genre);
-                    trackByGenre.getTrackByGenre(genre);
+                    songByGenre.getSongByGenre(genre);
                 }
                 else if (num == 4){
                     System.out.print("\nEnter a genre from list: ");
