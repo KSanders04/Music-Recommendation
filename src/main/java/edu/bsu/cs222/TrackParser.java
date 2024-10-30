@@ -10,7 +10,7 @@ public class TrackParser {
 
         if (!tracks.isEmpty()) {
             int numberOfTracks = 0;
-            System.out.println("\nTracks:");
+            System.out.println("\nSongs:");
             for (int i = 0; i < tracks.length() && numberOfTracks < 5; i++) {
                 String songName = tracks.getJSONObject(i).getString("name");
                 System.out.println(songName);

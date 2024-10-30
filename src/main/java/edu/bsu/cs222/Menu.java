@@ -57,9 +57,9 @@ public class Menu {
         boolean validGenre = false;
         while (!validGenre) {
             if (!genre.isEmpty() && genre != null) {
-                System.out.print("\nPlease pick an option to see results: ");
-                System.out.println("\n1: Artists");
-                System.out.println("2. Tracks");
+                System.out.println("\nPlease pick an option to see results: ");
+                System.out.println("1: Artists");
+                System.out.println("2. Songs");
                 System.out.println("3. Both");
                 System.out.println("4. Change Genre");
                 System.out.println("5. Exit");
