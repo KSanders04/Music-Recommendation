@@ -54,9 +54,11 @@ public class Menu {
 
         System.out.print("\nEnter a genre from list: ");
         String genre = scanner.nextLine().toLowerCase();
+
         boolean validGenre = false;
         while (!validGenre) {
-            if (!genre.isEmpty() && genre != null) {
+
+            if (!genre.isEmpty()) {
                 System.out.println("\nPlease pick an option to see results: ");
                 System.out.println("1: Artists");
                 System.out.println("2. Songs");
