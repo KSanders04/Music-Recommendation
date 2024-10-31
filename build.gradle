@@ -1,5 +1,6 @@
 plugins {
-    id 'java'
+    id ("java")
+    id ("org.openjfx.javafxplugin") version "0.0.13"
 }
 
 
@@ -22,8 +23,11 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     implementation('org.json:json:20231013')
-
-
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-fxml:17'
+    implementation 'org.openjfx:javafx-base:17'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 test {
