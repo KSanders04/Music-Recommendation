@@ -15,6 +15,8 @@ public class GUIMenu extends JFrame {
         setLayout(new BorderLayout());
 
         JLabel genreLabel = new JLabel("Select Genre:");
+        genreLabel.setFont(new Font("Serif", Font.BOLD,20));
+        genreLabel.setForeground(Color.GREEN);
         String[] genres = {
                 "acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass",
                 "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children",
@@ -32,6 +34,9 @@ public class GUIMenu extends JFrame {
                 "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"
         };
         genreComboBox = new JComboBox<>(genres);
+        genreComboBox.setForeground(Color.BLACK);
+        genreComboBox.setBackground(Color.GREEN);
+
 
         outputArea = createOutputArea();
         JLabel labelArea = new JLabel("Results");
@@ -46,16 +51,26 @@ public class GUIMenu extends JFrame {
         songButton.addActionListener(e -> getResults("song"));
         bothButton.addActionListener(e -> getResults("both"));
 
+        artistButton.setBackground(Color.GREEN);
+        artistButton.setForeground(Color.BLACK);
+        songButton.setBackground(Color.GREEN);
+        songButton.setForeground(Color.BLACK);
+        bothButton.setBackground(Color.GREEN);
+        bothButton.setForeground(Color.BLACK);
+
         JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.GRAY);
         topPanel.add(genreLabel);
         topPanel.add(genreComboBox);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.GRAY);
         buttonPanel.add(artistButton);
         buttonPanel.add(songButton);
         buttonPanel.add(bothButton);
 
         JPanel scrollPaneLabel = new JPanel();
+        scrollPaneLabel.setBackground(Color.BLACK);
         scrollPaneLabel.add(labelArea);
 
         add(topPanel, BorderLayout.NORTH);
@@ -71,6 +86,8 @@ public class GUIMenu extends JFrame {
         area.setEditable(false);
         area.setLineWrap(true);
         area.setWrapStyleWord(true);
+        area.setBackground(Color.GRAY);
+        area.setFont(new Font("Serif", Font.BOLD, 30));
         return area;
     }
 
