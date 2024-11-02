@@ -1,7 +1,7 @@
 package edu.bsu.cs222;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class GUIMenu extends JFrame {
     private final JComboBox<String> genreComboBox;
@@ -9,12 +9,11 @@ public class GUIMenu extends JFrame {
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Create components
         JLabel genreLabel = new JLabel("Select Genre:");
         String[] genres = {
                 "acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass",
@@ -35,7 +34,9 @@ public class GUIMenu extends JFrame {
         genreComboBox = new JComboBox<>(genres);
 
         outputArea = createOutputArea();
+        JLabel labelArea = new JLabel("Results");
         JScrollPane scrollPane = new JScrollPane(outputArea);
+        scrollPane.setPreferredSize(new Dimension(600, 400));
 
         JButton artistButton = new JButton("Get Artists");
         JButton songButton = new JButton("Get Songs");
@@ -45,7 +46,6 @@ public class GUIMenu extends JFrame {
         songButton.addActionListener(e -> getResults("song"));
         bothButton.addActionListener(e -> getResults("both"));
 
-        // Layout components
         JPanel topPanel = new JPanel();
         topPanel.add(genreLabel);
         topPanel.add(genreComboBox);
@@ -55,39 +55,43 @@ public class GUIMenu extends JFrame {
         buttonPanel.add(songButton);
         buttonPanel.add(bothButton);
 
+        JPanel scrollPaneLabel = new JPanel();
+        scrollPaneLabel.add(labelArea);
+
         add(topPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);
+        add(scrollPaneLabel, BorderLayout.WEST);
+
+        setVisible(true);
     }
 
     private JTextArea createOutputArea() {
-        JTextArea area = new JTextArea("Results");
+        JTextArea area = new JTextArea();
         area.setEditable(false);
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
         return area;
     }
 
     private void getResults(String type) {
         String genre = (String) genreComboBox.getSelectedItem();
-        outputArea.setText("");  // Clear previous results
+        outputArea.setText("");
         try {
+            StringBuilder results = new StringBuilder();
             ArtistByGenre artistByGenre = new ArtistByGenre();
             SongByGenre songByGenre = new SongByGenre();
 
-            switch (type) {
-                case "artist" -> {
-                    artistByGenre.getArtistByGenre(genre);
-                    outputArea.append("Artists for genre " + genre + "\n");
-                }
-                case "song" -> {
-                    songByGenre.getSongByGenre(genre);
-                    outputArea.append("Songs for genre " + genre + "\n");
-                }
-                case "both" -> {
-                    artistByGenre.getArtistByGenre(genre);
-                    songByGenre.getSongByGenre(genre);
-                    outputArea.append("Artists and Songs for genre " + genre + "\n");
-                }
+            if (type.equals("artist")) {
+                results.append("Artists:\n").append(artistByGenre.getArtistByGenre(genre)).append("\n");
+            } else if (type.equals("song")) {
+                results.append("Songs:\n").append(songByGenre.getSongByGenre(genre)).append("\n");
+            } else if (type.equals("both")) {
+                results.append("Artists:\n").append(artistByGenre.getArtistByGenre(genre)).append("\n\n");
+                results.append("Songs:\n").append(songByGenre.getSongByGenre(genre)).append("\n");
             }
+
+            outputArea.setText(results.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

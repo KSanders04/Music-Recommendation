@@ -4,8 +4,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ArtistParser {
-    public void printArtists(String jsonResponse) {
+
+    public String printArtists(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
+        StringBuilder artistList = new StringBuilder();
         JSONArray tracks = jsonObject.getJSONArray("tracks");
 
         if (!tracks.isEmpty()) {
@@ -16,6 +18,7 @@ public class ArtistParser {
                 JSONArray artists = tracks.getJSONObject(trackIndex).getJSONArray("artists");
                 for (int artistIndex = 0; artistIndex < artists.length() && numberOfArtists < 5; artistIndex++) {
                     String artistName = artists.getJSONObject(artistIndex).getString("name");
+                    artistList.append(artistName).append("\n");
                     System.out.println(artistName);
                     numberOfArtists += 1;
                 }
@@ -23,5 +26,6 @@ public class ArtistParser {
         } else {
             System.out.println("No artists found for this genre.");
         }
+        return artistList.toString();
     }
 }
