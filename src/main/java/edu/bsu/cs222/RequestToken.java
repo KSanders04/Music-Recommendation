@@ -58,4 +58,8 @@ public class RequestToken {
         }
         return null;
     }
+
+    public String getToken() {
+        return accessToken;
+    }
 }
