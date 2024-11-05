@@ -1,11 +1,14 @@
 package edu.bsu.cs222;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class GUIMenu extends JFrame {
     private final JComboBox<String> genreComboBox;
-    private final JTextArea outputArea;
+    private final JTextPane outputPane;
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
@@ -15,10 +18,10 @@ public class GUIMenu extends JFrame {
         setLayout(new BorderLayout());
 
         JLabel genreLabel = new JLabel("Select Genre:");
-        genreLabel.setFont(new Font("Serif", Font.BOLD,20));
+        genreLabel.setFont(new Font("Serif", Font.BOLD, 20));
         genreLabel.setForeground(Color.GREEN);
-        String[] genres = {
-                "acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass",
+
+        String[] genres = { "acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal", "bluegrass",
                 "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop", "chicago-house", "children",
                 "chill", "classical", "club", "comedy", "country", "dance", "dancehall", "death-metal", "deep-house",
                 "detroit-techno", "disco", "disney", "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic",
@@ -31,16 +34,22 @@ public class GUIMenu extends JFrame {
                 "psych-rock", "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock",
                 "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes",
                 "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish", "study", "summer",
-                "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music"
-        };
+                "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop", "turkish", "work-out", "world-music" };
         genreComboBox = new JComboBox<>(genres);
         genreComboBox.setForeground(Color.BLACK);
         genreComboBox.setBackground(Color.GREEN);
 
+        // Set up JTextPane for centered text
+        outputPane = new JTextPane();
+        outputPane.setEditable(false);
+        outputPane.setBackground(Color.GRAY);
+        outputPane.setFont(new Font("Serif", Font.BOLD, 20));
+        StyledDocument doc = outputPane.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        outputArea = createOutputArea();
-        JLabel labelArea = new JLabel("Results");
-        JScrollPane scrollPane = new JScrollPane(outputArea);
+        JScrollPane scrollPane = new JScrollPane(outputPane);
         scrollPane.setPreferredSize(new Dimension(600, 400));
 
         JButton artistButton = new JButton("Get Artists");
@@ -52,11 +61,8 @@ public class GUIMenu extends JFrame {
         bothButton.addActionListener(e -> getResults("both"));
 
         artistButton.setBackground(Color.GREEN);
-        artistButton.setForeground(Color.BLACK);
         songButton.setBackground(Color.GREEN);
-        songButton.setForeground(Color.BLACK);
         bothButton.setBackground(Color.GREEN);
-        bothButton.setForeground(Color.BLACK);
 
         JPanel topPanel = new JPanel();
         topPanel.setBackground(Color.GRAY);
@@ -69,31 +75,17 @@ public class GUIMenu extends JFrame {
         buttonPanel.add(songButton);
         buttonPanel.add(bothButton);
 
-        JPanel scrollPaneLabel = new JPanel();
-        scrollPaneLabel.setBackground(Color.BLACK);
-        scrollPaneLabel.add(labelArea);
-
         add(topPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
         add(scrollPane, BorderLayout.SOUTH);
-        add(scrollPaneLabel, BorderLayout.WEST);
 
         setVisible(true);
     }
 
-    private JTextArea createOutputArea() {
-        JTextArea area = new JTextArea();
-        area.setEditable(false);
-        area.setLineWrap(true);
-        area.setWrapStyleWord(true);
-        area.setBackground(Color.GRAY);
-        area.setFont(new Font("Serif", Font.BOLD, 30));
-        return area;
-    }
-
     private void getResults(String type) {
         String genre = (String) genreComboBox.getSelectedItem();
-        outputArea.setText("");
+        outputPane.setText("");
+
         try {
             StringBuilder results = new StringBuilder();
             ArtistByGenre artistByGenre = new ArtistByGenre();
@@ -108,13 +100,18 @@ public class GUIMenu extends JFrame {
                 results.append("Songs:\n").append(songByGenre.getSongByGenre(genre)).append("\n");
             }
 
-            outputArea.setText(results.toString());
+            outputPane.setText(results.toString());
+            StyledDocument doc = outputPane.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new GUIMenu().setVisible(true));
+        SwingUtilities.invokeLater(GUIMenu::new);
     }
 }
