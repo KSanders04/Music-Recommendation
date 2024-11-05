@@ -22,3 +22,6 @@ It makes discovering new artists simple by parsing raw data received from the AP
 ### Step 1: Clone the repository
 ### Step 2: Go to main and run program
 ### Step 3: Enter in a genre from the console
+
+## Compiler Warnings
+**Three deprecated warnings**: Haven't suppressed these yet
