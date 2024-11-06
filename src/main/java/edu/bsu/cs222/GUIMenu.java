@@ -17,16 +17,28 @@ public class GUIMenu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Initialize components
         genreComboBox = createGenreComboBox();
         outputPane = createOutputPane();
 
-        // Setup panels and layout
+        title();
         setupTopPanel();
         setupButtonPanel();
         setupOutputPane();
 
         setVisible(true);
+    }
+
+    private void title(){
+        JLabel title = new JLabel("Genre Recommender");
+        title.setFont(new Font("Roboto", Font.BOLD, 50));
+        title.setForeground(Color.WHITE);
+
+        JPanel titlePanel = new JPanel();
+        titlePanel.setBackground(Color.DARK_GRAY);
+        titlePanel.add(title);
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 100,0,0));
+
+        add(titlePanel, BorderLayout.NORTH);
     }
 
     private JComboBox<String> createGenreComboBox() {
@@ -49,8 +61,8 @@ public class GUIMenu extends JFrame {
                 "turkish", "work-out", "world-music" };
 
         JComboBox<String> comboBox = new JComboBox<>(genres);
-        comboBox.setForeground(Color.BLACK);
-        comboBox.setBackground(Color.GREEN);
+        comboBox.setForeground(Color.WHITE);
+        comboBox.setBackground(Color.decode("#1338BE"));
         comboBox.setFont(new Font("Serif", Font.PLAIN, 20));
         comboBox.setPreferredSize(new Dimension(150, 40));
         return comboBox;
@@ -59,8 +71,9 @@ public class GUIMenu extends JFrame {
     private JTextPane createOutputPane() {
         JTextPane pane = new JTextPane();
         pane.setEditable(false);
-        pane.setBackground(Color.GRAY);
-        pane.setFont(new Font("Serif", Font.BOLD, 20));
+        pane.setBackground(Color.DARK_GRAY);
+        pane.setForeground(Color.WHITE);
+        pane.setFont(new Font("Serif", Font.PLAIN, 20));
 
         StyledDocument doc = pane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -72,15 +85,13 @@ public class GUIMenu extends JFrame {
 
     private void setupTopPanel() {
         JLabel genreLabel = new JLabel("Select Genre:");
-        genreLabel.setFont(new Font("Serif", Font.BOLD, 20));
-        genreLabel.setForeground(Color.GREEN);
+        genreLabel.setFont(new Font("Roboto", Font.BOLD, 20));
 
         JPanel topPanel = new JPanel();
-        topPanel.setBackground(Color.GRAY);
         topPanel.add(genreLabel);
         topPanel.add(genreComboBox);
 
-        add(topPanel, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.CENTER);
     }
 
     private void setupButtonPanel() {
@@ -88,28 +99,56 @@ public class GUIMenu extends JFrame {
         JButton songButton = createButton("Get Songs", "song");
         JButton bothButton = createButton("Get Both", "both");
 
+        artistButton.setFont(new Font("Roboto", Font.BOLD, 22));
+        songButton.setFont(new Font("Roboto", Font.BOLD, 22));
+        bothButton.setFont(new Font("Roboto", Font.BOLD, 22));
+
+        artistButton.setBackground(Color.decode("#57A0D3"));
+        songButton.setBackground(Color.decode("#0147AB"));
+        bothButton.setBackground(Color.decode("#101D6B"));
+
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
-        buttonPanel.setBackground(Color.GRAY);
+        buttonPanel.setLayout(new GridLayout(3,2));
+
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setForeground(Color.WHITE);
+
         buttonPanel.add(artistButton);
         buttonPanel.add(songButton);
         buttonPanel.add(bothButton);
 
-        add(buttonPanel, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.WEST);
     }
 
     private JButton createButton(String text, String type) {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150, 40));
-        button.setBackground(Color.GREEN);
+        button.setForeground(Color.WHITE);
         button.addActionListener(e -> getResults(type));
         return button;
     }
 
     private void setupOutputPane() {
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BorderLayout());
+        centerPanel.setBackground(Color.GRAY);
+
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.DARK_GRAY);
+        JLabel genreLabel = new JLabel("Select Genre:");
+        genreLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        genreLabel.setForeground(Color.WHITE);
+        topPanel.add(genreLabel);
+        topPanel.add(genreComboBox);
+
         JScrollPane scrollPane = new JScrollPane(outputPane);
-        scrollPane.setPreferredSize(new Dimension(600, 400));
-        add(scrollPane, BorderLayout.SOUTH);
+        scrollPane.setPreferredSize(new Dimension(250, 150));
+
+        centerPanel.add(topPanel, BorderLayout.NORTH);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(centerPanel, BorderLayout.CENTER);
     }
 
     private void getResults(String type) {
@@ -117,22 +156,35 @@ public class GUIMenu extends JFrame {
         outputPane.setText("");
 
         try {
-            StringBuilder results = new StringBuilder();
+            StyledDocument doc = outputPane.getStyledDocument();
+            SimpleAttributeSet boldStyle = new SimpleAttributeSet();
+            StyleConstants.setBold(boldStyle, true);
+            StyleConstants.setFontSize(boldStyle, 36);
+
+            SimpleAttributeSet normalStyle = new SimpleAttributeSet();
+            StyleConstants.setFontSize(normalStyle, 20); 
+
             ArtistByGenre artistByGenre = new ArtistByGenre();
             SongByGenre songByGenre = new SongByGenre();
 
             switch (type) {
-                case "artist" -> results.append("Artists:\n").append(artistByGenre.getArtistByGenre(genre)).append("\n");
-                case "song" -> results.append("Songs:\n").append(songByGenre.getSongByGenre(genre)).append("\n");
+                case "artist" -> {
+                    doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
+                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n\n", normalStyle);
+                }
+                case "song" -> {
+                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
+                    doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
+                }
                 case "both" -> {
-                    results.append("Artists:\n").append(artistByGenre.getArtistByGenre(genre)).append("\n\n");
-                    results.append("Songs:\n").append(songByGenre.getSongByGenre(genre)).append("\n");
+                    doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
+                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n\n", normalStyle);
+                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
+                    doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
                 }
             }
-
-            outputPane.setText(results.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e);
         }
     }
 
