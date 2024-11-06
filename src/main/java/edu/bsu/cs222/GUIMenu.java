@@ -29,7 +29,7 @@ public class GUIMenu extends JFrame {
     }
 
     private void title(){
-        JLabel title = new JLabel("Genre Recommender");
+        JLabel title = new JLabel("Music Recommender");
         title.setFont(new Font("Roboto", Font.BOLD, 50));
         title.setForeground(Color.WHITE);
 
@@ -159,7 +159,7 @@ public class GUIMenu extends JFrame {
             StyledDocument doc = outputPane.getStyledDocument();
             SimpleAttributeSet boldStyle = new SimpleAttributeSet();
             StyleConstants.setBold(boldStyle, true);
-            StyleConstants.setFontSize(boldStyle, 36);
+            StyleConstants.setFontSize(boldStyle, 40);
 
             SimpleAttributeSet normalStyle = new SimpleAttributeSet();
             StyleConstants.setFontSize(normalStyle, 20); 
@@ -169,16 +169,16 @@ public class GUIMenu extends JFrame {
 
             switch (type) {
                 case "artist" -> {
-                    doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
-                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n\n", normalStyle);
+                    doc.insertString(doc.getLength(), "Artists:\n\n", boldStyle);
+                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
                 }
                 case "song" -> {
-                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
+                    doc.insertString(doc.getLength(), "Songs:\n\n", boldStyle);
                     doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
                 }
                 case "both" -> {
                     doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
-                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n\n", normalStyle);
+                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
                     doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
                     doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
                 }
