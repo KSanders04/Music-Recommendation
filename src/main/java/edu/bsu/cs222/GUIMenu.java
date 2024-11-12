@@ -1,10 +1,16 @@
 package edu.bsu.cs222;
 
+
+import javazoom.jl.player.Player;
+
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class GUIMenu extends JFrame {
     private final JComboBox<String> genreComboBox;
@@ -28,7 +34,7 @@ public class GUIMenu extends JFrame {
         setVisible(true);
     }
 
-    private void title(){
+    private void title() {
         JLabel title = new JLabel("Music Recommender");
         title.setFont(new Font("Roboto", Font.BOLD, 50));
         title.setForeground(Color.WHITE);
@@ -36,13 +42,13 @@ public class GUIMenu extends JFrame {
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(Color.DARK_GRAY);
         titlePanel.add(title);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 100,0,0));
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 0));
 
         add(titlePanel, BorderLayout.NORTH);
     }
 
     private JComboBox<String> createGenreComboBox() {
-        String[] genres = { "acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal",
+        String[] genres = {"acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal",
                 "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop",
                 "chicago-house", "children", "chill", "classical", "club", "comedy", "country",
                 "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney",
@@ -58,7 +64,7 @@ public class GUIMenu extends JFrame {
                 "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes",
                 "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish",
                 "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop",
-                "turkish", "work-out", "world-music" };
+                "turkish", "work-out", "world-music"};
 
         JComboBox<String> comboBox = new JComboBox<>(genres);
         comboBox.setForeground(Color.WHITE);
@@ -108,7 +114,7 @@ public class GUIMenu extends JFrame {
         bothButton.setBackground(Color.decode("#101D6B"));
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(3,2));
+        buttonPanel.setLayout(new GridLayout(3, 2));
 
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setForeground(Color.WHITE);
@@ -162,7 +168,7 @@ public class GUIMenu extends JFrame {
             StyleConstants.setFontSize(boldStyle, 40);
 
             SimpleAttributeSet normalStyle = new SimpleAttributeSet();
-            StyleConstants.setFontSize(normalStyle, 20); 
+            StyleConstants.setFontSize(normalStyle, 20);
 
             ArtistByGenre artistByGenre = new ArtistByGenre();
             SongByGenre songByGenre = new SongByGenre();
@@ -173,14 +179,37 @@ public class GUIMenu extends JFrame {
                     doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
                 }
                 case "song" -> {
-                    doc.insertString(doc.getLength(), "Songs:\n\n", boldStyle);
-                    doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
+                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
+                    String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
+                    for (String[] song : songs) {
+                        String songName = song[0];
+                        String previewUrl = song[1];
+
+                        doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
+
+                        JButton playButton = new JButton("Play");
+                        playButton.addActionListener(e -> playPreview(previewUrl));
+
+                        outputPane.insertComponent(playButton);
+                    }
                 }
                 case "both" -> {
                     doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
                     doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
-                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
-                    doc.insertString(doc.getLength(), songByGenre.getSongByGenre(genre) + "\n", normalStyle);
+
+                    doc.insertString(doc.getLength(), "Songs:", boldStyle);
+                    String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
+                    for (String[] song : songs) {
+                        String songName = song[0];
+                        String previewUrl = song[1];
+
+                        doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
+
+                        JButton playButton = new JButton("Play");
+                        playButton.addActionListener(e -> playPreview(previewUrl));
+
+                        outputPane.insertComponent(playButton);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -188,7 +217,33 @@ public class GUIMenu extends JFrame {
         }
     }
 
+    private void playPreview(String previewUrl) {
+        if (previewUrl == null || previewUrl.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No preview available for this song.");
+            return;
+
+            
+        }
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(previewUrl).openConnection();
+            connection.setRequestMethod("GET");
+
+            InputStream inputStream = connection.getInputStream();
+            Player player = new Player(inputStream);
+            new Thread(() -> {
+                try {
+                    player.play();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }).start();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Could not play preview.");
+        }
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(GUIMenu::new);
     }
 }
+

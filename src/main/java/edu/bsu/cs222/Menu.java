@@ -1,5 +1,5 @@
 package edu.bsu.cs222;
-
+/*
 import java.util.Scanner;
 
 public class Menu {
@@ -91,4 +91,4 @@ public class Menu {
             }
         }
     }
-}
+}*/
