@@ -1,9 +1,10 @@
 package edu.bsu.cs222;
 
-/*
+
+import javax.swing.*;
+
 public class Main {
-    public static void main(String[] args) throws Exception {
-        Menu menu = new Menu();
-        menu.getMenu();
+    public static void main(String[] args){
+        SwingUtilities.invokeLater(GUIMenu::new);
     }
-}*/
+}

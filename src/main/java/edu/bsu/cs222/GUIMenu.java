@@ -213,7 +213,7 @@ public class GUIMenu extends JFrame {
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e);
+            JOptionPane.showMessageDialog(this, "Error: " + e);
         }
     }
 
@@ -221,9 +221,8 @@ public class GUIMenu extends JFrame {
         if (previewUrl == null || previewUrl.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No preview available for this song.");
             return;
-
-            
         }
+
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(previewUrl).openConnection();
             connection.setRequestMethod("GET");
@@ -233,17 +232,14 @@ public class GUIMenu extends JFrame {
             new Thread(() -> {
                 try {
                     player.play();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error: " + e);
                 }
             }).start();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Could not play preview.");
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GUIMenu::new);
     }
 }
 

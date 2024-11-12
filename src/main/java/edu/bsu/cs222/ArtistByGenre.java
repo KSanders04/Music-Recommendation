@@ -27,8 +27,6 @@ public class ArtistByGenre {
                 }
                 return artistParser.printArtists(response.toString());
             }
-        } else {
-            System.out.println("Artist request failed");
         }
         return accessToken;
     }

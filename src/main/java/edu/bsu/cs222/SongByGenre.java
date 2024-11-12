@@ -28,8 +28,6 @@ public class SongByGenre {
                 }
                 return songParser.getSongsWithPreviews(response.toString());
             }
-        } else {
-            System.out.println("Song request failed. Response code: " + responseCode);
         }
         return new String[0][0];
     }
