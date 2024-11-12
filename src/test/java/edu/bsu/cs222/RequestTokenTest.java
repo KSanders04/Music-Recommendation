@@ -1,20 +1,27 @@
 package edu.bsu.cs222;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class RequestTokenTest {
-    private RequestToken requestToken;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    @BeforeEach
-    public void setUp() {
-        requestToken = new RequestToken();
-    }
+public class RequestTokenTest {
 
     @Test
-    public void testTokenReceived() {
-        String token = requestToken.getToken();
-        assertNull(token, "Token should be null");
+    public void testTokenIsReturned() {
+        RequestToken requestToken = new RequestToken();
+
+        String token = null;
+        try {
+            token = requestToken.getAccessToken();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertNotNull(token, "Token should not be null");
+
+        assertFalse(token.isEmpty(), "Token should not be empty");
     }
 }
+
