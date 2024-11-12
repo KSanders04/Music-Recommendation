@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@SuppressWarnings("ALL")
 public class GUIMenu extends JFrame {
     private final JComboBox<String> genreComboBox;
     private final JTextPane outputPane;

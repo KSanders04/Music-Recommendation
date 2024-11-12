@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
-
+@SuppressWarnings("ALL")
 public class RequestToken {
 
     String clientID = "dd6b2daa511b43089bf71651eaf0ca74";
