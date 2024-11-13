@@ -48,6 +48,7 @@ public class RequestToken {
                 }
                 accessToken = parseAccessToken(response.toString());
             }
+
         }else{
             throw new RuntimeException("Failed to fetch access token: " + connection.getResponseMessage());
         }

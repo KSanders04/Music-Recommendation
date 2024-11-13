@@ -12,7 +12,6 @@ public class ArtistParser {
 
         if (!tracks.isEmpty()) {
             int numberOfArtists = 0;
-            System.out.println("\nArtists:");
 
             for (int trackIndex = 0; trackIndex < tracks.length() && numberOfArtists < 5; trackIndex++) {
                 JSONArray artists = tracks.getJSONObject(trackIndex).getJSONArray("artists");

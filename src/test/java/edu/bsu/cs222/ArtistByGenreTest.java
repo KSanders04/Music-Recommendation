@@ -14,6 +14,7 @@ public class ArtistByGenreTest {
     @Test
     public void testGetArtistByGenre() {
         ArtistByGenre artistByGenre = new ArtistByGenre();
+
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outContent));
 
