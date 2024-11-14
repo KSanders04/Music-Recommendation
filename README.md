@@ -28,4 +28,4 @@ It allows you to see if a song is worth listening to the entire way.
 ### Step 5: If pick get Songs or get Both, press play next to the song to play the preview
 
 ## Error Warnings
-### Some Songs on spotify do not have avaliable previews attached to them if it comes back with this error thats why.
+#### Some Songs on spotify do not have avaliable previews attached to them if it comes back with this error thats why.
