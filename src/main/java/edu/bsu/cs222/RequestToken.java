@@ -8,7 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
-
+@SuppressWarnings("ALL")
 public class RequestToken {
 
     String clientID = CredentialsLoader.getId();
@@ -48,6 +48,7 @@ public class RequestToken {
                 }
                 accessToken = parseAccessToken(response.toString());
             }
+
         }else{
             throw new RuntimeException("Failed to fetch access token: " + connection.getResponseMessage());
         }

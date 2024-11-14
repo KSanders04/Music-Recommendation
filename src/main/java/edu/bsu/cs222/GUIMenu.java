@@ -12,9 +12,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@SuppressWarnings("ALL")
 public class GUIMenu extends JFrame {
     private final JComboBox<String> genreComboBox;
     private final JTextPane outputPane;
+    private Player player;
+    private boolean isPlaying = false;
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
@@ -134,6 +137,12 @@ public class GUIMenu extends JFrame {
         return button;
     }
 
+    private JButton createPlayButton(String previewUrl) {
+        JButton playButton = new JButton("Play");
+        playButton.addActionListener(e -> playPreview(previewUrl));
+        return playButton;
+    }
+
     private void setupOutputPane() {
 
         JPanel centerPanel = new JPanel();
@@ -187,9 +196,7 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = new JButton("Play");
-                        playButton.addActionListener(e -> playPreview(previewUrl));
-
+                        JButton playButton = createPlayButton(previewUrl);
                         outputPane.insertComponent(playButton);
                     }
                 }
@@ -199,51 +206,55 @@ public class GUIMenu extends JFrame {
 
                     doc.insertString(doc.getLength(), "Songs:", boldStyle);
                     String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
+
                     for (String[] song : songs) {
                         String songName = song[0];
                         String previewUrl = song[1];
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = new JButton("Play");
-                        playButton.addActionListener(e -> playPreview(previewUrl));
-
+                        JButton playButton = createPlayButton(previewUrl);
                         outputPane.insertComponent(playButton);
                     }
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e);
+            showError("Error: " + e);
         }
     }
 
     private void playPreview(String previewUrl) {
         if (previewUrl == null || previewUrl.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No preview available for this song.");
+            showError("No preview available for this song.");
             return;
-
-            
         }
+
+        if(player != null){
+            player.close();
+        }
+
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(previewUrl).openConnection();
             connection.setRequestMethod("GET");
 
             InputStream inputStream = connection.getInputStream();
-            Player player = new Player(inputStream);
+            player = new Player(inputStream);
+
             new Thread(() -> {
                 try {
                     player.play();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (Exception e) {
+                    showError("Error: " + e);
                 }
             }).start();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Could not play preview.");
+        }
+        catch (Exception e) {
+            showError("Could not play preview.");
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GUIMenu::new);
+    private void showError(String message){
+        JOptionPane.showMessageDialog(this, message);
     }
 }
 

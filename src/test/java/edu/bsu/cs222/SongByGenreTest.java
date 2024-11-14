@@ -17,10 +17,10 @@ public class SongByGenreTest {
         System.setOut(new PrintStream(outContent));
 
         try {
-            songByGenre.getSongByGenre("pop");
+            songByGenre.getSongByGenreWithPreviews("pop");
 
             String output = outContent.toString();
-            Assertions.assertTrue(output.contains("Songs"));
+            Assertions.assertTrue(output.contains("name"));
 
         } catch (Exception e) {
             fail("Exception thrown: " + e.getMessage());

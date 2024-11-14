@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@SuppressWarnings("ALL")
 public class SongByGenre {
 
     private final RequestToken requestToken = new RequestToken();
@@ -12,7 +13,7 @@ public class SongByGenre {
 
     public String[][] getSongByGenreWithPreviews(String genre) throws Exception {
         String accessToken = requestToken.getAccessToken();
-        String url = "https://api.spotify.com/v1/recommendations?limit=5&seed_genres=" + genre + "&min_popularity=35";
+        String url = "https://api.spotify.com/v1/recommendations?limit=5&seed_genres=" + genre + "&min_popularity=20";
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
@@ -28,8 +29,6 @@ public class SongByGenre {
                 }
                 return songParser.getSongsWithPreviews(response.toString());
             }
-        } else {
-            System.out.println("Song request failed. Response code: " + responseCode);
         }
         return new String[0][0];
     }
