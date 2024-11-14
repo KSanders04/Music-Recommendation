@@ -11,8 +11,8 @@ import java.util.Base64;
 
 public class RequestToken {
 
-    String clientID = "dd6b2daa511b43089bf71651eaf0ca74";
-    String clientSecret = "4bfb2902292045f7815ef909cab7984d";
+    String clientID = CredentialsLoader.getId();
+    String clientSecret = CredentialsLoader.getSecret();
     String tokenURL = "https://accounts.spotify.com/api/token";
     String accessToken;
 
