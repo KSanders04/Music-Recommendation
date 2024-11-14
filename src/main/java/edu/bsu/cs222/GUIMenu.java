@@ -12,12 +12,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-@SuppressWarnings("ALL")
 public class GUIMenu extends JFrame {
-    private final JComboBox<String> genreComboBox;
-    private final JTextPane outputPane;
+    public final JComboBox<String> genreComboBox;
+    public final JTextPane outputPane;
     private Player player;
-    private boolean isPlaying = false;
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
@@ -137,12 +135,6 @@ public class GUIMenu extends JFrame {
         return button;
     }
 
-    private JButton createPlayButton(String previewUrl) {
-        JButton playButton = new JButton("Play");
-        playButton.addActionListener(e -> playPreview(previewUrl));
-        return playButton;
-    }
-
     private void setupOutputPane() {
 
         JPanel centerPanel = new JPanel();
@@ -166,7 +158,7 @@ public class GUIMenu extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    private void getResults(String type) {
+    public void getResults(String type) {
         String genre = (String) genreComboBox.getSelectedItem();
         outputPane.setText("");
 
@@ -196,7 +188,9 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = createPlayButton(previewUrl);
+                        JButton playButton = new JButton("Play");
+                        playButton.addActionListener(e -> playPreview(previewUrl));
+
                         outputPane.insertComponent(playButton);
                     }
                 }
@@ -206,32 +200,33 @@ public class GUIMenu extends JFrame {
 
                     doc.insertString(doc.getLength(), "Songs:", boldStyle);
                     String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
-
                     for (String[] song : songs) {
                         String songName = song[0];
                         String previewUrl = song[1];
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = createPlayButton(previewUrl);
+                        JButton playButton = new JButton("Play");
+                        playButton.addActionListener(e -> playPreview(previewUrl));
+
                         outputPane.insertComponent(playButton);
                     }
                 }
             }
         } catch (Exception e) {
-            showError("Error: " + e);
+            System.out.println("Error: " + e);
         }
     }
 
     private void playPreview(String previewUrl) {
         if (previewUrl == null || previewUrl.isEmpty()) {
-            showError("No preview available for this song.");
+            JOptionPane.showMessageDialog(this, "No preview available for this song.");
             return;
         }
-
-        if(player != null){
+        if (player != null){
             player.close();
         }
+            
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(previewUrl).openConnection();
@@ -239,22 +234,20 @@ public class GUIMenu extends JFrame {
 
             InputStream inputStream = connection.getInputStream();
             player = new Player(inputStream);
-
             new Thread(() -> {
                 try {
                     player.play();
-                } catch (Exception e) {
-                    showError("Error: " + e);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }).start();
-        }
-        catch (Exception e) {
-            showError("Could not play preview.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Could not play preview.");
         }
     }
 
-    private void showError(String message){
-        JOptionPane.showMessageDialog(this, message);
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(GUIMenu::new);
     }
 }
 
