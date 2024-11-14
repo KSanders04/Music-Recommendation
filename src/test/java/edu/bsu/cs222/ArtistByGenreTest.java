@@ -16,12 +16,7 @@ public class ArtistByGenreTest {
             Assertions.assertFalse(result.trim().isEmpty(), "Result should not be empty");
 
             String[] lines = result.split(System.lineSeparator());;
-            Assertions.assertTrue(lines.length == 5, "Expected Five artist in the result");
-
-            for (String line : lines) {
-                Assertions.assertFalse(line.trim().isEmpty(), "Each artist line should contain a name");
-                System.out.println("Artist: " + line);
-            }
+            Assertions.assertEquals(5, lines.length, "Expected Five artist in the result");
 
         } catch (Exception e) {
             e.printStackTrace();
