@@ -2,6 +2,7 @@ package edu.bsu.cs222;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class CredentialsLoader {
@@ -9,7 +10,7 @@ public class CredentialsLoader {
     private static String secret;
 
     static {
-        try (FileInputStream input = new FileInputStream("/Users/ptmarlo/Desktop/cs222/FinalProject-AnthoneeEmar-ChrisSilhavy-KyleSanders/src/main/java/edu/bsu/cs222/Secret.txt")) {
+        try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("Secret.txt")) {
             Properties prop = new Properties();
             prop.load(input);
             id = prop.getProperty("ID");

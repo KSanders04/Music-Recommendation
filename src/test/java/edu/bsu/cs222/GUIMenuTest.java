@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class GUIMenuTest {
+public class  GUIMenuTest {
     private GUIMenu guiMenu;
 
     @BeforeEach

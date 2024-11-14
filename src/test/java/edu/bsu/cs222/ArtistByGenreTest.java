@@ -22,7 +22,7 @@ public class ArtistByGenreTest {
             artistByGenre.getArtistByGenre("pop");
 
             String output = outContent.toString();
-            Assertions.assertTrue(output.contains("Artists"));
+            Assertions.assertEquals(true, output.contains("Artists"));
 
         } catch (Exception e) {
             fail("Exception thrown: " + e.getMessage());
