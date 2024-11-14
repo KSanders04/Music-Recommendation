@@ -1,31 +1,21 @@
 package edu.bsu.cs222;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.fail;
-
-public class SongByGenreTest {
+class SongByGenreTest {
 
     @Test
-    public void testGetSongsByGenre() {
+    void testGetSongByGenreWithPreviews() throws Exception {
         SongByGenre songByGenre = new SongByGenre();
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
 
-        try {
-            songByGenre.getSongByGenreWithPreviews("pop");
+        String genre = "pop";
+        String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
 
-            String output = outContent.toString();
-            Assertions.assertTrue(output.contains("name"));
-
-        } catch (Exception e) {
-            fail("Exception thrown: " + e.getMessage());
-        } finally {
-            System.setOut(System.out);
-        }
+        // Verify that the response is not null and contains song data
+        assertNotNull(songs, "The songs array should not be null");
+        assertTrue(songs.length > 0, "The songs array should contain at least one song");
+        assertTrue(songs[0].length == 2, "Each song entry should contain two elements (song name and preview URL)");
     }
 }
