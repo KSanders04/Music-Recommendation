@@ -2,6 +2,7 @@ package edu.bsu.cs222;
 
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,7 +12,7 @@ public class SecretTest {
     public void testIdAndSecretReadCorrectly() {
         Properties properties = new Properties();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("/Users/ptmarlo/Desktop/cs222/FinalProject-AnthoneeEmar-ChrisSilhavy-KyleSanders/src/main/java/edu/bsu/cs222/secret.txt"))) {
+        try (InputStream reader = Thread.currentThread().getContextClassLoader().getResourceAsStream("Secret.txt")) {
             properties.load(reader);
 
             String id = properties.getProperty("ID");

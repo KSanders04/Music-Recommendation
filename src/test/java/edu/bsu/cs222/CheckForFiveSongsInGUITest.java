@@ -22,16 +22,16 @@ public class CheckForFiveSongsInGUITest {
 
         String[] lines = outputText.split("\n");
 
-        long songCount = 0;
+        long songsCount = 0;
         if (lines.length >= 5) {
             for (String line : lines) {
                 String trimmedLine = line.trim();
                 if (!trimmedLine.isEmpty() && !trimmedLine.contains("Songs:")) {
-                    songCount += 1;
+                    songsCount += 1;
                 }
             }
         }
 
-        assertEquals(5, songCount, "Output should contain 5 songs.");
+        assertEquals(5, songsCount, "Output should contain 5 songs.");
     }
 }
