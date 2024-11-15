@@ -2,10 +2,6 @@ package edu.bsu.cs222;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import static org.junit.jupiter.api.Assertions.*;
-
 
 public class ArtistByGenreTest {
 
@@ -13,19 +9,18 @@ public class ArtistByGenreTest {
     public void testGetArtistByGenre() {
         ArtistByGenre artistByGenre = new ArtistByGenre();
 
-        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outContent));
-
         try {
-            artistByGenre.getArtistByGenre("pop");
+            String result = artistByGenre.getArtistByGenre("pop");
 
-            String output = outContent.toString();
-            Assertions.assertTrue(output.contains("Artists:"));
+            Assertions.assertNotNull(result, "Result should not be null");
+            Assertions.assertFalse(result.trim().isEmpty(), "Result should not be empty");
+
+            String[] lines = result.split(System.lineSeparator());;
+            Assertions.assertEquals(5, lines.length, "Expected Five artist in the result");
 
         } catch (Exception e) {
-            fail("Exception thrown: " + e.getMessage());
-        } finally {
-            System.setOut(System.out);
+            e.printStackTrace();
+            Assertions.fail("Exception thrown during API request: " + e.getMessage());
         }
     }
 }
