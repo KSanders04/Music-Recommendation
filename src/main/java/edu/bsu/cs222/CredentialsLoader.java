@@ -1,10 +1,10 @@
 package edu.bsu.cs222;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@SuppressWarnings("ALL")
 public class CredentialsLoader {
     private static String id;
     private static String secret;

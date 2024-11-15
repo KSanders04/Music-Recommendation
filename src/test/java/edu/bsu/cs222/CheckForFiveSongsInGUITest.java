@@ -27,8 +27,7 @@ public class CheckForFiveSongsInGUITest {
             for (String line : lines) {
                 String trimmedLine = line.trim();
                 if (!trimmedLine.isEmpty() && !trimmedLine.contains("Songs:")) {
-                    songCount++;
-                    System.out.println("Song: " + trimmedLine);
+                    songCount += 1;
                 }
             }
         }
