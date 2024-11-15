@@ -2,10 +2,8 @@ package edu.bsu.cs222;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -22,7 +20,7 @@ public class ArtistByGenreTest {
             artistByGenre.getArtistByGenre("pop");
 
             String output = outContent.toString();
-            Assertions.assertTrue(output.contains("Artists"));
+            Assertions.assertTrue(output.contains("Artists:"));
 
         } catch (Exception e) {
             fail("Exception thrown: " + e.getMessage());

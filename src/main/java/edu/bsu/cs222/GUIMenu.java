@@ -1,6 +1,5 @@
 package edu.bsu.cs222;
 
-
 import javazoom.jl.player.Player;
 
 import javax.swing.*;
@@ -12,6 +11,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@SuppressWarnings("ALL")
 public class GUIMenu extends JFrame {
     public final JComboBox<String> genreComboBox;
     public final JTextPane outputPane;
@@ -135,6 +135,12 @@ public class GUIMenu extends JFrame {
         return button;
     }
 
+    private JButton playButton(String previewUrl){
+        JButton playButton = new JButton("Play");
+        playButton.addActionListener(e -> playPreview(previewUrl));
+        return playButton;
+    }
+
     private void setupOutputPane() {
 
         JPanel centerPanel = new JPanel();
@@ -188,9 +194,7 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = new JButton("Play");
-                        playButton.addActionListener(e -> playPreview(previewUrl));
-
+                        JButton playButton = playButton(previewUrl);
                         outputPane.insertComponent(playButton);
                     }
                 }
@@ -206,9 +210,7 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = new JButton("Play");
-                        playButton.addActionListener(e -> playPreview(previewUrl));
-
+                        JButton playButton = playButton(previewUrl);
                         outputPane.insertComponent(playButton);
                     }
                 }
@@ -226,7 +228,6 @@ public class GUIMenu extends JFrame {
         if (player != null){
             player.close();
         }
-            
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(previewUrl).openConnection();
@@ -238,7 +239,7 @@ public class GUIMenu extends JFrame {
                 try {
                     player.play();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error: " + ex);
                 }
             }).start();
         } catch (Exception e) {
@@ -246,8 +247,5 @@ public class GUIMenu extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(GUIMenu::new);
-    }
 }
 

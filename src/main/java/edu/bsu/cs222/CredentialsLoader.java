@@ -9,13 +9,13 @@ public class CredentialsLoader {
     private static String secret;
 
     static {
-        try (FileInputStream input = new FileInputStream("/Users/ptmarlo/Desktop/cs222/FinalProject-AnthoneeEmar-ChrisSilhavy-KyleSanders/src/main/java/edu/bsu/cs222/Secret.txt")) {
+        try (FileInputStream input = new FileInputStream("/My Projects/SongRecommendationApp/src/test/resources/Secret.txt")) {
             Properties prop = new Properties();
             prop.load(input);
             id = prop.getProperty("ID");
             secret = prop.getProperty("Secret");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e);
         }
     }
 

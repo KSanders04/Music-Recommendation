@@ -12,8 +12,7 @@ public class SecretTest {
     @Test
     public void testIdAndSecretReadCorrectly() {
         Properties properties = new Properties();
-        //Put in the file path to Secret.txt
-        try (BufferedReader reader = new BufferedReader(new FileReader("/Users/ptmarlo/Desktop/cs222/FinalProject-AnthoneeEmar-ChrisSilhavy-KyleSanders/src/main/java/edu/bsu/cs222/secret.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("/My Projects/SongRecommendationApp/src/main/java/edu/bsu/cs222/Secret.txt"))) {
             properties.load(reader);
 
             String id = properties.getProperty("ID");

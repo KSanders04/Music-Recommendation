@@ -19,6 +19,7 @@ public class ArtistParser {
                     String artistName = artists.getJSONObject(artistIndex).getString("name");
                     artistList.append(artistName).append("\n");
                     numberOfArtists += 1;
+
                 }
             }
         }
