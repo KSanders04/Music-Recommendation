@@ -7,7 +7,9 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -49,23 +51,21 @@ public class GUIMenu extends JFrame {
     }
 
     private JComboBox<String> createGenreComboBox() {
-        String[] genres = {"acoustic", "afrobeat", "alt-rock", "alternative", "ambient", "anime", "black-metal",
-                "bluegrass", "blues", "bossanova", "brazil", "breakbeat", "british", "cantopop",
-                "chicago-house", "children", "chill", "classical", "club", "comedy", "country",
-                "dance", "dancehall", "death-metal", "deep-house", "detroit-techno", "disco", "disney",
-                "drum-and-bass", "dub", "dubstep", "edm", "electro", "electronic", "emo", "folk", "forro",
-                "french", "funk", "garage", "german", "gospel", "goth", "grindcore", "groove", "grunge",
-                "guitar", "happy", "hard-rock", "hardcore", "hardstyle", "heavy-metal", "hip-hop",
-                "holidays", "honky-tonk", "house", "idm", "indian", "indie", "indie-pop", "industrial",
-                "iranian", "j-dance", "j-idol", "j-pop", "j-rock", "jazz", "k-pop", "kids", "latin",
-                "latino", "malay", "mandopop", "metal", "metal-misc", "metalcore", "minimal-techno",
-                "movies", "mpb", "new-age", "new-release", "opera", "pagode", "party", "philippines-opm",
-                "piano", "pop", "pop-film", "post-dubstep", "power-pop", "progressive-house", "psych-rock",
-                "punk", "punk-rock", "r-n-b", "rainy-day", "reggae", "reggaeton", "road-trip", "rock",
-                "rock-n-roll", "rockabilly", "romance", "sad", "salsa", "samba", "sertanejo", "show-tunes",
-                "singer-songwriter", "ska", "sleep", "songwriter", "soul", "soundtracks", "spanish",
-                "study", "summer", "swedish", "synth-pop", "tango", "techno", "trance", "trip-hop",
-                "turkish", "work-out", "world-music"};
+        String[] genres = {
+                "lounge",
+                "classical",
+                "electronic",
+                "jazz",
+                "pop",
+                "hiphop",
+                "relaxation",
+                "rock",
+                "songwriter",
+                "world",
+                "metal",
+                "soundtrack"
+        };
+
 
         JComboBox<String> comboBox = new JComboBox<>(genres);
         comboBox.setForeground(Color.WHITE);
@@ -165,11 +165,12 @@ public class GUIMenu extends JFrame {
     }
 
     public void getResults(String type) {
-        String genre = (String) genreComboBox.getSelectedItem();
-        outputPane.setText("");
+        String genre = (String) genreComboBox.getSelectedItem();  // Get the selected genre
+        outputPane.setText("");  // Clear previous results
 
         try {
             StyledDocument doc = outputPane.getStyledDocument();
+
             SimpleAttributeSet boldStyle = new SimpleAttributeSet();
             StyleConstants.setBold(boldStyle, true);
             StyleConstants.setFontSize(boldStyle, 40);
@@ -177,48 +178,58 @@ public class GUIMenu extends JFrame {
             SimpleAttributeSet normalStyle = new SimpleAttributeSet();
             StyleConstants.setFontSize(normalStyle, 20);
 
-            ArtistByGenre artistByGenre = new ArtistByGenre();
-            SongByGenre songByGenre = new SongByGenre();
+            ArtistByGenre artistByGenre = new ArtistByGenre();  // Create instance of ArtistByGenre
+            SongByGenre songByGenre = new SongByGenre();  // Assuming SongByGenre handles songs
 
             switch (type) {
-                case "artist" -> {
+                case "artist":
                     doc.insertString(doc.getLength(), "Artists:\n\n", boldStyle);
                     doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
-                }
-                case "song" -> {
+                    break;
+
+                case "song":
                     doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
                     String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
                     for (String[] song : songs) {
                         String songName = song[0];
                         String previewUrl = song[1];
 
-                        doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
+                        doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = playButton(previewUrl);
+                        JButton playButton = playButton(previewUrl);  // Play button to preview song
                         outputPane.insertComponent(playButton);
+
+                        JButton likeButton = likeButton(songName);  // Like button
+                        outputPane.insertComponent(likeButton);
                     }
-                }
-                case "both" -> {
+                    break;
+
+                case "both":
+                    // Handle both artists and songs
                     doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
                     doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
 
-                    doc.insertString(doc.getLength(), "Songs:", boldStyle);
-                    String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
+                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
+                    songs = songByGenre.getSongByGenreWithPreviews(genre);
                     for (String[] song : songs) {
                         String songName = song[0];
                         String previewUrl = song[1];
 
-                        doc.insertString(doc.getLength(),"\n" + songName + "   ", normalStyle);
+                        doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = playButton(previewUrl);
+                        JButton playButton = playButton(previewUrl);  // Play button to preview song
                         outputPane.insertComponent(playButton);
+
+                        JButton likeButton = likeButton(songName);  // Like button
+                        outputPane.insertComponent(likeButton);
                     }
-                }
+                    break;
             }
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
     }
+
 
     private void playPreview(String previewUrl) {
         if (previewUrl == null || previewUrl.isEmpty()) {
@@ -246,6 +257,22 @@ public class GUIMenu extends JFrame {
             JOptionPane.showMessageDialog(this, "Could not play preview.");
         }
     }
+    private JButton likeButton(String songName) {
+        JButton likeButton = new JButton("❤️"); // Use a heart symbol
+        likeButton.addActionListener(e -> saveLike(songName));
+        return likeButton;
+    }
+    private void saveLike(String songName) {
+        JOptionPane.showMessageDialog(this, songName + " has been liked!");
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter("liked_songs.txt", true))) {
+            writer.println(songName);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error saving liked song: " + ex);
+        }
+    }
+
+
 
 }
 
