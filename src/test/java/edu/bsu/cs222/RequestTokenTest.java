@@ -1,20 +1,22 @@
 package edu.bsu.cs222;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class RequestTokenTest {
-    private RequestToken requestToken;
+import static org.junit.jupiter.api.Assertions.*;
 
-    @BeforeEach
-    public void setUp() {
-        requestToken = new RequestToken();
-    }
+class RequestTokenTest {
 
     @Test
-    public void testTokenReceived() {
-        String token = requestToken.getToken();
-        assertNull(token, "Token should be null");
+    void testGetAccessToken() throws Exception {
+        // Arrange
+        RequestToken requestToken = new RequestToken();
+
+        // Act
+        String token = requestToken.getAccessToken();
+
+        // Assert
+        assertNotNull(token, "Access token should not be null");
+        assertEquals("b2320882", token, "The access token should match the API key");
     }
+
 }

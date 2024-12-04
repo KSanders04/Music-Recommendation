@@ -236,7 +236,7 @@ public class GUIMenu extends JFrame {
             JOptionPane.showMessageDialog(this, "No preview available for this song.");
             return;
         }
-        if (player != null){
+        if (player != null) {
             player.close();
         }
 
@@ -257,8 +257,9 @@ public class GUIMenu extends JFrame {
             JOptionPane.showMessageDialog(this, "Could not play preview.");
         }
     }
+
     private JButton likeButton(String songName) {
-        JButton likeButton = new JButton("❤️"); // Use a heart symbol
+        JButton likeButton = new JButton("❤️");
         likeButton.addActionListener(e -> saveLike(songName));
         return likeButton;
     }
@@ -275,4 +276,5 @@ public class GUIMenu extends JFrame {
 
 
 }
+
 
