@@ -5,10 +5,16 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.util.List;
 
-public class GUIPlaylist extends JFrame{
+public class GUIPlaylist extends JFrame {
+    private final List<String> likedSongs;
 
-    public void guiPlaylist(){
+    public GUIPlaylist(List<String> likedSongs) {
+        this.likedSongs = likedSongs;
+    }
+
+    public void guiPlaylist() {
         setTitle("Playlist");
         setSize(800, 600);
         setBackground(Color.DARK_GRAY);
@@ -29,7 +35,7 @@ public class GUIPlaylist extends JFrame{
 
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(Color.DARK_GRAY);
-        titlePanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,0));
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 50, 0));
         titlePanel.add(title);
 
         add(titlePanel, BorderLayout.NORTH);
@@ -51,17 +57,23 @@ public class GUIPlaylist extends JFrame{
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setPreferredSize(new Dimension(750, 400));
 
-        add(backButton());
+        StringBuilder playlistContent = new StringBuilder();
+        for (String song : likedSongs) {
+            playlistContent.append(song).append("\n");
+        }
+        pane.setText(playlistContent.toString());
+
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    private JButton backButton(){
+    private JButton backButton() {
         JButton back = new JButton("<< Back");
         back.setFont(new Font("Roboto", Font.BOLD, 15));
-        back.setBounds(20,505,95,35);
+        back.setBounds(20, 505, 95, 35);
         back.setFocusable(false);
-        back.addActionListener(e ->dispose());
+        back.addActionListener(e -> dispose());
 
         return back;
     }
 }
+

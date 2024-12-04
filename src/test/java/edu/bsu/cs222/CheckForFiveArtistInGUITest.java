@@ -8,16 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CheckForFiveArtistInGUITest {
     private GUIMenu guiMenu;
+    private MusicController musicController;
 
     @BeforeEach
     public void setUp() {
         guiMenu = new GUIMenu();
+        musicController = new MusicController(guiMenu, new ArtistByGenre(), new SongByGenre());
     }
 
     @Test
     public void testGetResultsArtist() {
         guiMenu.genreComboBox.setSelectedItem("jazz");
-        guiMenu.getResults("artist");
+        musicController.getResults("artist");
         String outputText = guiMenu.outputPane.getText();
         assertNotNull(outputText, "Output pane should display artists.");
 

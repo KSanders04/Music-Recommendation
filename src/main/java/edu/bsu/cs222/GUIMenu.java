@@ -12,12 +12,17 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("ALL")
 public class GUIMenu extends JFrame {
     public final JComboBox<String> genreComboBox;
     public final JTextPane outputPane;
     private Player player;
+    private final List<String> likedSongs = new ArrayList<>();
+    private MusicController musicController;
+    private String songName;
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
@@ -35,6 +40,7 @@ public class GUIMenu extends JFrame {
         setupOutputPane();
 
         setVisible(true);
+        musicController = new MusicController(this, new ArtistByGenre(), new SongByGenre());
     }
 
     private void title() {
@@ -65,7 +71,6 @@ public class GUIMenu extends JFrame {
                 "metal",
                 "soundtrack"
         };
-
 
         JComboBox<String> comboBox = new JComboBox<>(genres);
         comboBox.setForeground(Color.WHITE);
@@ -131,30 +136,28 @@ public class GUIMenu extends JFrame {
         JButton button = new JButton(text);
         button.setPreferredSize(new Dimension(150, 40));
         button.setForeground(Color.WHITE);
-        button.addActionListener(e -> getResults(type));
+        button.addActionListener(e -> musicController.getResults(type));
         return button;
     }
 
-    private JButton playButton(String previewUrl){
+    public JButton playButton(String previewUrl) {
         JButton playButton = new JButton("▶️");
         playButton.addActionListener(e -> playPreview(previewUrl));
         return playButton;
     }
 
-    private JButton playlistButton(){
-        GUIPlaylist gui = new GUIPlaylist();
+    private JButton playlistButton() {
         JButton playlist = new JButton("Playlist");
         playlist.setFont(new Font("Roboto", Font.BOLD, 20));
 
-        playlist.setBounds(470,440,150,40);
+        playlist.setBounds(470, 440, 150, 40);
         playlist.setFocusable(false);
-        playlist.addActionListener(e -> gui.guiPlaylist());
+        playlist.addActionListener(e -> new GUIPlaylist(likedSongs).guiPlaylist());
 
         return playlist;
     }
 
     private void setupOutputPane() {
-
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BorderLayout());
         centerPanel.setBackground(Color.GRAY);
@@ -178,76 +181,38 @@ public class GUIMenu extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public void getResults(String type) {
-        String genre = (String) genreComboBox.getSelectedItem();
-        outputPane.setText("");
+    public JComboBox<String> getGenreComboBox() {
+        return genreComboBox;
+    }
 
-        try {
-            StyledDocument doc = outputPane.getStyledDocument();
+    public JTextPane getOutputPane() {
+        return outputPane;
+    }
 
-            SimpleAttributeSet boldStyle = new SimpleAttributeSet();
-            StyleConstants.setBold(boldStyle, true);
-            StyleConstants.setFontSize(boldStyle, 40);
+    public JButton CreateplayButton(String previewUrl) {
+        return playButton(previewUrl);
+    }
 
-            SimpleAttributeSet normalStyle = new SimpleAttributeSet();
-            StyleConstants.setFontSize(normalStyle, 20);
-
-            ArtistByGenre artistByGenre = new ArtistByGenre();
-            SongByGenre songByGenre = new SongByGenre();
-
-            switch (type) {
-                case "artist":
-                    doc.insertString(doc.getLength(), "Artists:\n\n", boldStyle);
-                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
-                    break;
-
-                case "song":
-                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
-                    String[][] songs = songByGenre.getSongByGenreWithPreviews(genre);
-                    for (String[] song : songs) {
-                        String songName = song[0];
-                        String previewUrl = song[1];
-
-                        doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
-
-                        JButton playButton = playButton(previewUrl);
-                        outputPane.insertComponent(playButton);
-
-                        JButton likeButton = likeButton(songName);
-                        outputPane.insertComponent(likeButton);
-                    }
-                    break;
-
-                case "both":
-                    // Handle both artists and songs
-                    doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
-                    doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
-
-                    doc.insertString(doc.getLength(), "Songs:\n", boldStyle);
-                    songs = songByGenre.getSongByGenreWithPreviews(genre);
-                    for (String[] song : songs) {
-                        String songName = song[0];
-                        String previewUrl = song[1];
-
-                        doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
-
-                        JButton playButton = playButton(previewUrl);
-                        outputPane.insertComponent(playButton);
-
-                        JButton likeButton = likeButton(songName);
-                        outputPane.insertComponent(likeButton);
-                    }
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e);
-        }
+    public JButton createLikeButton(String songName) {
+        JButton likeButton = new JButton("❤️ Like");
+        likeButton.addActionListener(e -> saveLike(songName));
+        return likeButton;
     }
 
 
-    private void playPreview(String previewUrl) {
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    public void saveLike(String songName) {
+        JOptionPane.showMessageDialog(this, songName + " has been liked!");
+        likedSongs.add(songName);
+    }
+
+
+    public void playPreview(String previewUrl) {
         if (previewUrl == null || previewUrl.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "No preview available for this song.");
+            showMessage("No preview available for this song.");
             return;
         }
         if (player != null) {
@@ -264,26 +229,11 @@ public class GUIMenu extends JFrame {
                 try {
                     player.play();
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, "Error: " + ex);
+                    showMessage("Error: " + ex);
                 }
             }).start();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Could not play preview.");
-        }
-    }
-
-    private JButton likeButton(String songName) {
-        JButton likeButton = new JButton("❤️");
-        likeButton.addActionListener(e -> saveLike(songName));
-        return likeButton;
-    }
-    private void saveLike(String songName) {
-        JOptionPane.showMessageDialog(this, songName + " has been liked!");
-
-        try (PrintWriter writer = new PrintWriter(new FileWriter("liked_songs.txt", true))) {
-            writer.println(songName);
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Error saving liked song: " + ex);
+            showMessage("Could not play preview.");
         }
     }
 }

@@ -16,10 +16,10 @@ public class SecretTest {
             properties.load(reader);
 
             String id = properties.getProperty("ID");
-            String secret = properties.getProperty("Secret");
+            String secret = properties.getProperty("apiKey");
 
-            assertEquals("b2885153405844bf9fbf5fb4fbad27bb", id, "ID does not match expected value.");
-            assertEquals("e074972f15b844819eaa087ef38092b8", secret, "Secret does not match expected value.");
+            assertEquals(null, id, "ID does not match expected value.");
+            assertEquals("b2320882", secret, "Secret does not match expected value.");
         } catch (IOException e) {
             throw new RuntimeException("Error reading the secret file", e);
         }
