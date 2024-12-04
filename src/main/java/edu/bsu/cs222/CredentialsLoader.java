@@ -4,28 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@SuppressWarnings("ALL")
 public class CredentialsLoader {
-    private static String id;
-    private static String secret;
+
+    private static String apiKey;
 
     static {
         try (InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("Secret.txt")) {
+
             Properties prop = new Properties();
             prop.load(input);
-            id = prop.getProperty("ID");
-            secret = prop.getProperty("Secret");
+            apiKey = prop.getProperty("apiKey");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static String getId() {
-        return id;
-    }
-
-    public static String getSecret() {
-        return secret;
+    public static String getApiKey() {
+        return apiKey;
     }
 }
-
