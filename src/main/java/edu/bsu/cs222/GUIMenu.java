@@ -38,7 +38,7 @@ public class GUIMenu extends JFrame {
     }
 
     private void title() {
-        JLabel title = new JLabel("Music Recommender");
+        JLabel title = new JLabel("🎵   Music Recommender   🎵");
         title.setFont(new Font("Roboto", Font.BOLD, 50));
         title.setForeground(Color.WHITE);
 
@@ -136,9 +136,21 @@ public class GUIMenu extends JFrame {
     }
 
     private JButton playButton(String previewUrl){
-        JButton playButton = new JButton("Play");
+        JButton playButton = new JButton("▶️");
         playButton.addActionListener(e -> playPreview(previewUrl));
         return playButton;
+    }
+
+    private JButton playlistButton(){
+        GUIPlaylist gui = new GUIPlaylist();
+        JButton playlist = new JButton("Playlist");
+        playlist.setFont(new Font("Roboto", Font.BOLD, 20));
+
+        playlist.setBounds(470,440,150,40);
+        playlist.setFocusable(false);
+        playlist.addActionListener(e -> gui.guiPlaylist());
+
+        return playlist;
     }
 
     private void setupOutputPane() {
@@ -154,8 +166,10 @@ public class GUIMenu extends JFrame {
         genreLabel.setForeground(Color.WHITE);
         topPanel.add(genreLabel);
         topPanel.add(genreComboBox);
+        topPanel.add(playlistButton());
 
         JScrollPane scrollPane = new JScrollPane(outputPane);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setPreferredSize(new Dimension(250, 150));
 
         centerPanel.add(topPanel, BorderLayout.NORTH);
@@ -165,8 +179,8 @@ public class GUIMenu extends JFrame {
     }
 
     public void getResults(String type) {
-        String genre = (String) genreComboBox.getSelectedItem();  // Get the selected genre
-        outputPane.setText("");  // Clear previous results
+        String genre = (String) genreComboBox.getSelectedItem();
+        outputPane.setText("");
 
         try {
             StyledDocument doc = outputPane.getStyledDocument();
@@ -178,8 +192,8 @@ public class GUIMenu extends JFrame {
             SimpleAttributeSet normalStyle = new SimpleAttributeSet();
             StyleConstants.setFontSize(normalStyle, 20);
 
-            ArtistByGenre artistByGenre = new ArtistByGenre();  // Create instance of ArtistByGenre
-            SongByGenre songByGenre = new SongByGenre();  // Assuming SongByGenre handles songs
+            ArtistByGenre artistByGenre = new ArtistByGenre();
+            SongByGenre songByGenre = new SongByGenre();
 
             switch (type) {
                 case "artist":
@@ -196,10 +210,10 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = playButton(previewUrl);  // Play button to preview song
+                        JButton playButton = playButton(previewUrl);
                         outputPane.insertComponent(playButton);
 
-                        JButton likeButton = likeButton(songName);  // Like button
+                        JButton likeButton = likeButton(songName);
                         outputPane.insertComponent(likeButton);
                     }
                     break;
@@ -217,10 +231,10 @@ public class GUIMenu extends JFrame {
 
                         doc.insertString(doc.getLength(), "\n" + songName + "   ", normalStyle);
 
-                        JButton playButton = playButton(previewUrl);  // Play button to preview song
+                        JButton playButton = playButton(previewUrl);
                         outputPane.insertComponent(playButton);
 
-                        JButton likeButton = likeButton(songName);  // Like button
+                        JButton likeButton = likeButton(songName);
                         outputPane.insertComponent(likeButton);
                     }
                     break;
@@ -272,9 +286,6 @@ public class GUIMenu extends JFrame {
             JOptionPane.showMessageDialog(this, "Error saving liked song: " + ex);
         }
     }
-
-
-
 }
 
 
