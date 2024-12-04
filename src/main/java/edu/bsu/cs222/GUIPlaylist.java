@@ -16,7 +16,6 @@ public class GUIPlaylist extends JFrame{
         setLayout(new BorderLayout());
 
         title();
-        backButton();
         createOutputPane();
 
         setVisible(true);
@@ -50,17 +49,16 @@ public class GUIPlaylist extends JFrame{
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setPreferredSize(new Dimension(750, 400));
 
+        add(backButton());
         add(scrollPane, BorderLayout.CENTER);
     }
 
     private JButton backButton(){
-        GUIMenu gui = new GUIMenu();
         JButton back = new JButton("<< Back");
-        back.setFont(new Font("Roboto", Font.BOLD, 20));
-
-        back.setBounds(470,440,150,40);
+        back.setFont(new Font("Roboto", Font.BOLD, 15));
+        back.setBounds(20,505,95,35);
         back.setFocusable(false);
-        back.addActionListener(e ->gui.getTitle());
+        back.addActionListener(e ->dispose());
 
         return back;
     }
