@@ -7,6 +7,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 public class GUIPlaylist extends JFrame{
+
     public void guiPlaylist(){
         setTitle("Playlist");
         setSize(800, 600);
@@ -28,6 +29,7 @@ public class GUIPlaylist extends JFrame{
 
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(Color.DARK_GRAY);
+        titlePanel.setBorder(BorderFactory.createEmptyBorder(0,0,50,0));
         titlePanel.add(title);
 
         add(titlePanel, BorderLayout.NORTH);
