@@ -6,22 +6,18 @@ import org.json.JSONObject;
 public class ArtistParser {
 
     public String printArtists(String jsonResponse) {
-        JSONObject jsonObject = new JSONObject(jsonResponse);
+        JSONObject jsonObject = new JSONObject(jsonResponse);  // Convert the raw JSON to a JSONObject
         StringBuilder artistList = new StringBuilder();
-        JSONArray tracks = jsonObject.getJSONArray("tracks");
 
-        if (!tracks.isEmpty()) {
-            int numberOfArtists = 0;
+        JSONArray results = jsonObject.getJSONArray("results");
 
-            for (int trackIndex = 0; trackIndex < tracks.length() && numberOfArtists < 5; trackIndex++) {
-                JSONArray artists = tracks.getJSONObject(trackIndex).getJSONArray("artists");
-                for (int artistIndex = 0; artistIndex < artists.length() && numberOfArtists < 5; artistIndex++) {
-                    String artistName = artists.getJSONObject(artistIndex).getString("name");
-                    artistList.append(artistName).append("\n");
-                    numberOfArtists += 1;
+        int numberOfArtists = 0;
+        for (int i = 0; i < results.length() && numberOfArtists < 5; i++) {
+            JSONObject track = results.getJSONObject(i);
+            String artistName = track.getString("artist_name");
 
-                }
-            }
+            artistList.append(artistName).append("\n");
+            numberOfArtists++;
         }
         return artistList.toString();
     }
