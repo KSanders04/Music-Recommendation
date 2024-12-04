@@ -5,18 +5,20 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.io.IOException;
+import java.util.Scanner;
+
 import org.json.JSONObject;
 
 public class ArtistByGenre {
 
-    RequestToken requestToken = new RequestToken(); // Get the API key from CredentialsLoader
-    ArtistParser artistParser = new ArtistParser(); // Assuming ArtistParser parses the artist data from JSON response
+    RequestToken requestToken = new RequestToken();
+    ArtistParser artistParser = new ArtistParser();
 
-    // Method to get artists by genre
     public String getArtistByGenre(String genre) throws IOException {
-        String accessToken = requestToken.getAccessToken();  // Get the access token (API key)
+        String accessToken = requestToken.getAccessToken();
 
-        String url = "https://api.jamendo.com/v3.0/tracks/?client_id=" + accessToken + "&format=json&limit=all&fuzzytags=lounge+classical+electronic+jazz+pop+hiphop+relaxation+rock+songwriter+world+metal+soundtrack&groupby=artist_id";
+        String url = "https://api.jamendo.com/v3.0/tracks/?client_id=" + accessToken +
+                "&format=json&limit=200&fuzzytags=" + genre + "&groupby=artist_id";
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
@@ -35,15 +37,34 @@ public class ArtistByGenre {
                 if (jsonResponse.has("results") && jsonResponse.getJSONArray("results").length() > 0) {
                     return artistParser.printArtists(response.toString());
                 } else {
-                    System.out.println("No tracks found in the response.");
-                    return "No tracks found in the response.";
+                    System.out.println("No tracks found for the specified genre.");
+                    return "No tracks found for the specified genre.";
                 }
             }
         } else {
             System.out.println("Error: " + responseCode);
             return "Failed to fetch tracks with response code: " + responseCode;
         }
-
-
     }
+
+
+
+    public static void main(String[] args) {
+        ArtistByGenre artistByGenre = new ArtistByGenre();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter a genre (e.g., jazz, pop, rock, etc.):");
+        String genre = scanner.nextLine();
+
+        try {
+            String result = artistByGenre.getArtistByGenre(genre);
+            System.out.println("Artists found:");
+            System.out.println(result);
+        } catch (IOException e) {
+            System.err.println("An error occurred while fetching artists: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
+    }
+
 }
