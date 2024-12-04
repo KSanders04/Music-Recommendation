@@ -31,8 +31,6 @@ public class ArtistByGenre {
                     response.append(line);
                 }
 
-                System.out.println("Full Response: " + response.toString());
-
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 if (jsonResponse.has("results") && jsonResponse.getJSONArray("results").length() > 0) {
                     return artistParser.printArtists(response.toString());
