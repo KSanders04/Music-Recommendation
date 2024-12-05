@@ -54,7 +54,6 @@ public class MusicController {
                     break;
 
                 case "both":
-                    // Handle both artists and songs
                     doc.insertString(doc.getLength(), "Artists:\n", boldStyle);
                     doc.insertString(doc.getLength(), artistByGenre.getArtistByGenre(genre) + "\n", normalStyle);
 

@@ -46,7 +46,7 @@ public class GUIPlaylist extends JFrame {
         pane.setEditable(false);
         pane.setBackground(Color.DARK_GRAY);
         pane.setForeground(Color.WHITE);
-        pane.setFont(new Font("Serif", Font.PLAIN, 20));
+        pane.setFont(new Font("Serif", Font.PLAIN, 40));
 
         StyledDocument doc = pane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -59,10 +59,11 @@ public class GUIPlaylist extends JFrame {
 
         StringBuilder playlistContent = new StringBuilder();
         for (String song : likedSongs) {
-            playlistContent.append(song).append("\n");
+            playlistContent.append(song).append("\n\n");
         }
         pane.setText(playlistContent.toString());
 
+        add(backButton());
         add(scrollPane, BorderLayout.CENTER);
     }
 

@@ -7,9 +7,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,8 +19,7 @@ public class GUIMenu extends JFrame {
     public final JTextPane outputPane;
     private Player player;
     private final List<String> likedSongs = new ArrayList<>();
-    private MusicController musicController;
-    private String songName;
+    private final MusicController musicController;
 
     public GUIMenu() {
         setTitle("Music Genre Menu");
@@ -146,6 +143,12 @@ public class GUIMenu extends JFrame {
         return playButton;
     }
 
+    public JButton createLikeButton(String songName) {
+        JButton likeButton = new JButton("❤️ Like");
+        likeButton.addActionListener(e -> saveLike(songName));
+        return likeButton;
+    }
+
     private JButton playlistButton() {
         JButton playlist = new JButton("Playlist");
         playlist.setFont(new Font("Roboto", Font.BOLD, 20));
@@ -181,29 +184,6 @@ public class GUIMenu extends JFrame {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-    public JComboBox<String> getGenreComboBox() {
-        return genreComboBox;
-    }
-
-    public JTextPane getOutputPane() {
-        return outputPane;
-    }
-
-    public JButton CreateplayButton(String previewUrl) {
-        return playButton(previewUrl);
-    }
-
-    public JButton createLikeButton(String songName) {
-        JButton likeButton = new JButton("❤️ Like");
-        likeButton.addActionListener(e -> saveLike(songName));
-        return likeButton;
-    }
-
-
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
-    }
-
     public void saveLike(String songName) {
         JOptionPane.showMessageDialog(this, songName + " has been liked!");
         likedSongs.add(songName);
@@ -212,7 +192,7 @@ public class GUIMenu extends JFrame {
 
     public void playPreview(String previewUrl) {
         if (previewUrl == null || previewUrl.isEmpty()) {
-            showMessage("No preview available for this song.");
+            JOptionPane.showMessageDialog(this,"No preview available for this song.");
             return;
         }
         if (player != null) {
@@ -229,12 +209,28 @@ public class GUIMenu extends JFrame {
                 try {
                     player.play();
                 } catch (Exception ex) {
-                    showMessage("Error: " + ex);
+                    JOptionPane.showMessageDialog(this, "Error: " + ex);
                 }
             }).start();
         } catch (Exception e) {
-            showMessage("Could not play preview.");
+            JOptionPane.showMessageDialog(this,"Could not play preview.");
         }
+    }
+
+    public JComboBox<String> getGenreComboBox() {
+        return genreComboBox;
+    }
+
+    public JTextPane getOutputPane() {
+        return outputPane;
+    }
+
+    public JButton CreateplayButton(String previewUrl) {
+        return playButton(previewUrl);
+    }
+
+    public void showMessage(String message){
+        JOptionPane.showMessageDialog(this, message);
     }
 }
 
