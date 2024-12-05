@@ -1,5 +1,5 @@
 # Artist and song recommender
-# **Due to the recent updates with Spotify API, this project now runs with Jamendo API**
+# **Due to the recent updates with Jamendo API, this project now runs with Jamendo API**
 This program interacts with the Spotify API to retrieve and display up to 5 different artists based on the genre inputed. 
 It makes discovering new artists simple by parsing raw data received from the API and displaying it in a user friendly format.
 This program in V.2 allows you to play a preview of the random songs that generate.
