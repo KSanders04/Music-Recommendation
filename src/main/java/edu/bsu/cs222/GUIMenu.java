@@ -144,7 +144,7 @@ public class GUIMenu extends JFrame {
     }
 
     public JButton createLikeButton(String songName) {
-        JButton likeButton = new JButton("❤️ Like");
+        JButton likeButton = new JButton("❤️");
         likeButton.addActionListener(e -> saveLike(songName));
         return likeButton;
     }
@@ -185,8 +185,12 @@ public class GUIMenu extends JFrame {
     }
 
     public void saveLike(String songName) {
-        JOptionPane.showMessageDialog(this, songName + " has been liked!");
-        likedSongs.add(songName);
+        if (!likedSongs.contains(songName)) {
+            likedSongs.add(songName);
+            JOptionPane.showMessageDialog(this, songName + " has been liked!");
+        }else {
+            JOptionPane.showMessageDialog(this, songName + " is already in your playlist!");
+        }
     }
 
 
@@ -233,5 +237,3 @@ public class GUIMenu extends JFrame {
         JOptionPane.showMessageDialog(this, message);
     }
 }
-
-

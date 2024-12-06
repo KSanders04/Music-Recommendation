@@ -7,8 +7,9 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.util.List;
 
+@SuppressWarnings("ALL")
 public class GUIPlaylist extends JFrame {
-    private final List<String> likedSongs;
+    final List<String> likedSongs;
 
     public GUIPlaylist(List<String> likedSongs) {
         this.likedSongs = likedSongs;
@@ -77,4 +78,3 @@ public class GUIPlaylist extends JFrame {
         return back;
     }
 }
-

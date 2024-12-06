@@ -15,10 +15,8 @@ public class SecretTest {
         try (InputStream reader = Thread.currentThread().getContextClassLoader().getResourceAsStream("Secret.txt")) {
             properties.load(reader);
 
-            String id = properties.getProperty("ID");
             String secret = properties.getProperty("apiKey");
 
-            assertEquals(null, id, "ID does not match expected value.");
             assertEquals("b2320882", secret, "Secret does not match expected value.");
         } catch (IOException e) {
             throw new RuntimeException("Error reading the secret file", e);

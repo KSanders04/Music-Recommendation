@@ -5,6 +5,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+@SuppressWarnings("ALL")
 public class MusicController {
     private final GUIMenu view;
     private final ArtistByGenre artistByGenre;
@@ -78,5 +79,3 @@ public class MusicController {
         }
     }
 }
-
-
