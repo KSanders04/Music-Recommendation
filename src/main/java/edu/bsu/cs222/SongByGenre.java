@@ -13,7 +13,7 @@ public class SongByGenre {
 
     public String[][] getSongByGenreWithPreviews(String genre) throws Exception {
         String accessToken = requestToken.getAccessToken();
-        String url = "https://api.jamendo.com/v3.0/tracks/?client_id=b2320882&format=json&limit=200&order=popularity_month_desc&fuzzytags=" + genre;
+        String url = "https://api.jamendo.com/v3.0/tracks/?client_id=" + accessToken + "&format=json&limit=200&order=popularity_month_desc&fuzzytags=" + genre;
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setRequestMethod("GET");
