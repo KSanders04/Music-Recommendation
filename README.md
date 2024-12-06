@@ -15,7 +15,7 @@ It allows you to see if a song is worth listening to the entire way.
 - **API Key**: Must get a Jamendo API Key from the Jamendo API website.
 - **Discover New Music**: Get to know new artists for your favorite genre or rediscover artists you may have forgotten about.
 - **Preview a song**: Play a preview of a song from the random songs that populate from search.
-- **GUI**: adds a pop-up GUI program that displays the resutlts cleaner. 
+- **GUI**: adds a pop-up GUI program that displays the results cleaner. 
 ## Prerequisites
 - **Java and Gradle and GUI addition**
 - **Jamendo Api accountt**: You will need a API key to access the Jamendo API.
