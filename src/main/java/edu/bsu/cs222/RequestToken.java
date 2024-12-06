@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class RequestToken {
 
-    private String apiKey;
+    private final String apiKey;
 
     public RequestToken() {
         this.apiKey = CredentialsLoader.getApiKey();
