@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.List;
 
 public class GUIPlaylist extends JFrame {
-    private final List<String> likedSongs;
+    final List<String> likedSongs;
 
     public GUIPlaylist(List<String> likedSongs) {
         this.likedSongs = likedSongs;
