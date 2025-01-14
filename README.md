@@ -18,7 +18,7 @@ It allows you to see if a song is worth listening to the entire way.
 - **GUI**: adds a pop-up GUI program that displays the results cleaner. 
 ## Prerequisites
 - **Java and Gradle and GUI addition**
-- **Jamendo Api accountt**: You will need a API key to access the Jamendo API.
+- **Jamendo Api account**: You will need a API key to access the Jamendo API.
   
 ## Instructions
 
